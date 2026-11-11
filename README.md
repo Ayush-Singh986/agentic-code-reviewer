@@ -9,8 +9,8 @@
   <img src="https://img.shields.io/badge/TUI-Textual-a78bfa?style=flat-square" />
   <img src="https://img.shields.io/badge/Categories-23-6366f1?style=flat-square" />
   <img src="https://img.shields.io/badge/Providers-6-0ea5e9?style=flat-square" />
-  <a href="https://github.com/royxforge/agentic-code-reviewer/actions/workflows/ci.yml"><img src="https://github.com/royxforge/agentic-code-reviewer/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
-  <img src="https://img.shields.io/github/actions/workflow/status/royxforge/agentic-code-reviewer/publish.yml?style=flat-square&label=publish" />
+  <a href="https://github.com/Ayush-Singh986/agentic-code-reviewer/actions/workflows/ci.yml"><img src="https://github.com/Ayush-Singh986/agentic-code-reviewer/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
+  <img src="https://img.shields.io/github/actions/workflow/status/Ayush-Singh986/agentic-code-reviewer/publish.yml?style=flat-square&label=publish" />
   <img src="https://img.shields.io/badge/License-MIT-6366f1?style=flat-square" />
 </p>
 
@@ -21,9 +21,6 @@
 > **Try it on CPU, no key:** `LOG_LEVEL=WARNING LLM_PROVIDER=mock acr review-local .` (drop `LOG_LEVEL` to see the structured run log)
 
 <img src="docs/demo.gif" alt="Terminal demo: acr review-local . against the mock provider - no API key" width="820" />
-
-
----
 
 ## Table of Contents
 
@@ -225,7 +222,7 @@ agentic-code-reviewer/
 pip install agentic-code-reviewer
 
 # From source (development / full extras)
-git clone https://github.com/royxforge/agentic-code-reviewer.git
+git clone https://github.com/Ayush-Singh986/agentic-code-reviewer.git
 cd agentic-code-reviewer
 pip install -e ".[all]"
 ```
@@ -594,21 +591,21 @@ All settings are read from environment variables and map to `Settings` fields in
 
 ## Related Work
 
-- [Multi-Agent Research System](https://github.com/royxforge/multi-agent-research-system) - The same "never let one model grade its own work" principle applied to literature synthesis: its Critic verifies claims against sources the way Agentic Code Reviewer's evidence resolver verifies findings against the repository.
-- [RAG Evaluation Framework](https://github.com/royxforge/rag-evaluation-framework) - LLM-judged faithfulness scoring and hallucination-rate metrics; Agentic Code Reviewer's layered verification is the code-review analogue of that evaluation gate.
-- [Production Drift Detection](https://github.com/royxforge/production-drift-detection) - Both systems replace expensive human judgement with continuous automated measurement: drift detection monitors model behavior in production, Agentic Code Reviewer monitors change quality at review time.
-- [Unsupervised Confidence Estimation](https://github.com/royxforge/unsupervised-confidence-estimation) - Confidence calibration without ground truth; the evidence-status and severity model here is the review-time analogue of that project's label-free confidence signal.
+- [Multi-Agent Research System](https://github.com/Ayush-Singh986/multi-agent-research-system) - The same "never let one model grade its own work" principle applied to literature synthesis: its Critic verifies claims against sources the way Agentic Code Reviewer's evidence resolver verifies findings against the repository.
+- [RAG Evaluation Framework](https://github.com/Ayush-Singh986/rag-evaluation-framework) - LLM-judged faithfulness scoring and hallucination-rate metrics; Agentic Code Reviewer's layered verification is the code-review analogue of that evaluation gate.
+- [Production Drift Detection](https://github.com/Ayush-Singh986/production-drift-detection) - Both systems replace expensive human judgement with continuous automated measurement: drift detection monitors model behavior in production, Agentic Code Reviewer monitors change quality at review time.
+- [Unsupervised Confidence Estimation](https://github.com/Ayush-Singh986/unsupervised-confidence-estimation) - Confidence calibration without ground truth; the evidence-status and severity model here is the review-time analogue of that project's label-free confidence signal.
 
 ---
 
 ## Citation
 
 ```bibtex
-@software{roy2026agenticcodereviewer,
-  author = {Roy, Sourav},
+@software{singh2026agenticcodereviewer,
+  author = {Singh, Ayush},
   title  = {Agentic Code Reviewer: Multi-Agent LLM Code Review with Layered Deterministic Verification},
   year   = {2026},
-  url    = {https://github.com/royxforge/agentic-code-reviewer}
+  url    = {https://github.com/Ayush-Singh986/agentic-code-reviewer}
 }
 ```
 
@@ -623,5 +620,5 @@ MIT - see [LICENSE](LICENSE)
 ---
 
 <p align="center">
-  <sub>Built by <a href="https://github.com/royxforge">Sourav Roy</a> · Artificial Intelligence Engineer · Accure Inc.</sub>
+  <sub>Built by <a href="https://github.com/Ayush-Singh986">Ayush Singh</a> · Artificial Intelligence Engineer · Accure Inc.</sub>
 </p>
