@@ -103,8 +103,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
   call arguments.
 - **Aggregator fallback double-ranking**: `_fallback_review` applied
   `rank_findings` twice; the redundant second call is removed.
-- **SARIF `informationUri`**: pointed to a non-existent GitHub org; corrected
-  to `https://github.com/royxforge/agentic-code-reviewer`.
+- **SARIF `informationUri`**: updated to reflect the current repository location
+  at `https://github.com/Ayush-Singh986/agentic-code-reviewer`.
 - **README**: test-count badge and references updated from 386 to 432.
 
 ## [0.2.1] - 2026-08-12

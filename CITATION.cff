@@ -1,15 +1,14 @@
 cff-version: 1.2.0
 message: "If you use this software in your research, please cite it as below."
 authors:
-  - family-names: Roy
-    given-names: Sourav
-    email: royxforge@gmail.com
+  - family-names: Singh
+    given-names: Ayush
     orcid: ""
 title: "Agentic Code Reviewer: Multi-Agent LLM Code Review with Layered Deterministic Verification"
 version: 0.5.0
 date-released: 2026-10-13
-url: "https://github.com/royxforge/agentic-code-reviewer"
-repository-code: "https://github.com/royxforge/agentic-code-reviewer"
+url: "https://github.com/Ayush-Singh986/agentic-code-reviewer"
+repository-code: "https://github.com/Ayush-Singh986/agentic-code-reviewer"
 license: MIT
 keywords:
   - code review
@@ -27,8 +26,8 @@ abstract: "Production-grade agentic code reviewer: a multi-step LLM workflow wit
 preferred-citation:
   type: software
   authors:
-    - family-names: Roy
-      given-names: Sourav
+    - family-names: Singh
+      given-names: Ayush
   title: "Agentic Code Reviewer: Multi-Agent LLM Code Review with Layered Deterministic Verification"
   year: 2026
-  url: "https://github.com/royxforge/agentic-code-reviewer"
+  url: "https://github.com/Ayush-Singh986/agentic-code-reviewer"
