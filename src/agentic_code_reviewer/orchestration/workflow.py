@@ -34,10 +34,12 @@ from agentic_code_reviewer.agents.base import AgentRun, BaseAgent
 from agentic_code_reviewer.agents.change_analyzer import ChangeAnalyzerAgent
 from agentic_code_reviewer.agents.compatibility import CompatibilityAgent
 from agentic_code_reviewer.agents.concurrency import ConcurrencyAgent
+from agentic_code_reviewer.agents.compliance import ComplianceAgent
 from agentic_code_reviewer.agents.configuration import ConfigurationAgent
 from agentic_code_reviewer.agents.correctness import CorrectnessAgent
 from agentic_code_reviewer.agents.data_integrity import DataIntegrityAgent
 from agentic_code_reviewer.agents.dead_code import DeadCodeChecker
+from agentic_code_reviewer.agents.dependency_chain import DependencyChainAgent
 from agentic_code_reviewer.agents.dependencies import DependenciesAgent
 from agentic_code_reviewer.agents.error_handling import ErrorHandlingAgent
 from agentic_code_reviewer.agents.i18n import I18nAgent
@@ -127,6 +129,8 @@ _ANALYSIS_AGENTS: dict[str, type[BaseAgent]] = {
     "compatibility": CompatibilityAgent,
     "configuration": ConfigurationAgent,
     "resource_lifecycle": ResourceLifecycleAgent,
+    "dependency_chain": DependencyChainAgent,
+    "compliance": ComplianceAgent,
     "dead_code": DeadCodeChecker,
 }
 
@@ -151,6 +155,8 @@ _CHECK_SWITCHES: dict[str, str] = {
     "compatibility": "workflow_use_compatibility_agent",
     "configuration": "workflow_use_configuration_agent",
     "resource_lifecycle": "workflow_use_resource_lifecycle_agent",
+    "dependency_chain": "workflow_use_dependency_chain_agent",
+    "compliance": "workflow_use_compliance_agent",
     "dead_code": "workflow_use_dead_code_checker",
 }
 

@@ -226,6 +226,114 @@ RESOURCE_LIFECYCLE_PATTERNS: list[tuple[str, Pattern[str]]] = [
 ]
 
 # ----------------------------------------------------------------------
+# Dependency Chain Analysis
+# ----------------------------------------------------------------------
+DEPENDENCY_CHAIN_PATTERNS: list[tuple[str, Pattern[str]]] = [
+    # Known vulnerable package names in dependency files
+    (
+        "dep-chain-vulnerable-pkg",
+        re.compile(
+            r"\b(log4j|lodash|moment|xmlrpc|pyyaml|pillow|urllib3|certifi|cryptography)\b",
+            re.IGNORECASE,
+        ),
+    ),
+    # Unpinned transitive dependencies (>= or ~= but no upper bound)
+    (
+        "dep-chain-unpinned-transitive",
+        re.compile(r"[\w.\-]+\s*[>=~]=\s*\d+(?:\.\d+)*[^<>=~]"),
+    ),
+    # Hash-pinned dependencies (good - chain is pinned)
+    (
+        "dep-chain-pinned-hash",
+        re.compile(r"--hash\s*=\s*(sha256|sha384|sha512):[A-Za-z0-9]+", re.IGNORECASE),
+    ),
+    # Heavy/cloud-cost-impacting packages
+    (
+        "dep-chain-heavy-dep",
+        re.compile(
+            r"\b(tensorflow|torch|pandas|numpy|scipy|transformers|scikit-learn)\b",
+            re.IGNORECASE,
+        ),
+    ),
+    # Git-sourced dependencies
+    (
+        "dep-chain-git-dep",
+        re.compile(r"git\s*\+\s*(https|ssh)://", re.IGNORECASE),
+    ),
+]
+
+# ----------------------------------------------------------------------
+# Compliance & Regulation
+# ----------------------------------------------------------------------
+COMPLIANCE_PATTERNS: list[tuple[str, Pattern[str]]] = [
+    # GDPR PII field detection
+    (
+        "gdpr-pii-field",
+        re.compile(
+            r"\b(?:email|phone|dob|date_of_birth|ssn|address|full_name|"
+            r"first_name|last_name|ip_address|user_agent)\b",
+            re.IGNORECASE,
+        ),
+    ),
+    # GDPR consent markers missing
+    (
+        "gdpr-no-consent",
+        re.compile(
+            r"\b(?:insert|create|save)\b.*?(?:email|phone|dob|address|user_agent)"
+            r"(?!.*?(?:consent|gdpr| lawful|permission))",
+            re.IGNORECASE | re.DOTALL,
+        ),
+    ),
+    # HIPAA PHI field detection
+    (
+        "hipaa-phi-field",
+        re.compile(
+            r"\b(?:diagnosis|medication|treatment|patient|health_record|medical|"
+            r"dob|mrn|insurance|clinical|lab_result)\b",
+            re.IGNORECASE,
+        ),
+    ),
+    # PCI-DSS card data detection
+    (
+        "pci-dss-card-data",
+        re.compile(
+            r"\b(?:card_number|cvv|cvc|pan|cardholder|expiry|credit_card|"
+            r"payment_card|debit_card|card\s*number)\b",
+            re.IGNORECASE,
+        ),
+    ),
+    # PCI-DSS missing encryption
+    (
+        "pci-dss-no-encrypt",
+        re.compile(
+            r"(?:card_number|cvv|cvc|pan|credit_card)\s*=\s*[^#]+"
+            r"(?!\s*(?:encrypt|hash|mask|vault|tokenize))",
+            re.IGNORECASE | re.DOTALL,
+        ),
+    ),
+    # SOC2 missing audit trail
+    (
+        "soc2-missing-audit",
+        re.compile(
+            r"\b(?:create|update|delete|insert|remove)\b.*?"
+            r"(?:user|resource|permission|role|access)\b.*?"
+            r"(?!.*?(?:audit_log|log_event|record_action|track))",
+            re.IGNORECASE | re.DOTALL,
+        ),
+    ),
+    # SOC2 access control gaps
+    (
+        "soc2-access-control",
+        re.compile(
+            r"@(?:app|bp|router)\.(?:post|put|delete|patch|route)\s*\([^)]*\).*?"
+            r"(?:admin|admin_only|super_user|permission_required|role_required)?"
+            r"(?!.*?(?:current_user|user_id|auth|authorize|permission))",
+            re.IGNORECASE | re.DOTALL,
+        ),
+    ),
+]
+
+# ----------------------------------------------------------------------
 CATEGORY_PATTERNS_EXTRA: dict[str, list[tuple[str, Pattern[str]]]] = {
     "authorization": AUTHORIZATION_PATTERNS,
     "reliability": RELIABILITY_PATTERNS,
@@ -233,4 +341,6 @@ CATEGORY_PATTERNS_EXTRA: dict[str, list[tuple[str, Pattern[str]]]] = {
     "compatibility": COMPATIBILITY_PATTERNS,
     "configuration": CONFIGURATION_PATTERNS,
     "resource_lifecycle": RESOURCE_LIFECYCLE_PATTERNS,
+    "dependency_chain": DEPENDENCY_CHAIN_PATTERNS,
+    "compliance": COMPLIANCE_PATTERNS,
 }
