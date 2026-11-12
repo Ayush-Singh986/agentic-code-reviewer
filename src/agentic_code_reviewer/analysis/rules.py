@@ -14,6 +14,8 @@ from re import Pattern
 
 from agentic_code_reviewer.analysis.category_rules import (
     CATEGORY_PATTERNS_EXTRA,
+    DEPENDENCY_CHAIN_PATTERNS,
+    COMPLIANCE_PATTERNS,
     SECURITY_PATTERNS_EXTRA,
 )
 

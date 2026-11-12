@@ -7,14 +7,14 @@
   <img src="https://img.shields.io/pypi/dm/agentic-code-reviewer?style=flat-square" />
   <img src="https://img.shields.io/badge/CLI-Typer-3fa037?style=flat-square" />
   <img src="https://img.shields.io/badge/TUI-Textual-a78bfa?style=flat-square" />
-  <img src="https://img.shields.io/badge/Categories-23-6366f1?style=flat-square" />
+  <img src="https://img.shields.io/badge/Categories-25-6366f1?style=flat-square" />
   <img src="https://img.shields.io/badge/Providers-6-0ea5e9?style=flat-square" />
   <a href="https://github.com/Ayush-Singh986/agentic-code-reviewer/actions/workflows/ci.yml"><img src="https://github.com/Ayush-Singh986/agentic-code-reviewer/actions/workflows/ci.yml/badge.svg" alt="CI" /></a>
   <img src="https://img.shields.io/github/actions/workflow/status/Ayush-Singh986/agentic-code-reviewer/publish.yml?style=flat-square&label=publish" />
   <img src="https://img.shields.io/badge/License-MIT-6366f1?style=flat-square" />
 </p>
 
-> **A code reviewer that never lets the model grade its own work: every finding is re-checked against the real diff, the changed lines and the surrounding symbols before it ships.** 23 evidence-backed categories, layered deterministic verification (regex, AST, symbol, taint), six providers, and a full-screen Textual dashboard, all behind one `acr` command with no `.env` file.
+> **A code reviewer that never lets the model grade its own work: every finding is re-checked against the real diff, the changed lines and the surrounding symbols before it ships.** 25 evidence-backed categories, layered deterministic verification (regex, AST, symbol, taint), six providers, and a full-screen Textual dashboard, all behind one `acr` command with no `.env` file.
 >
 > **Result:** **462 tests pass fully offline** in about two minutes, with ruff and mypy clean across 101 source files — provider calls are transport-mocked, so CI proves the pipeline without spending a token.
 >
@@ -27,7 +27,7 @@
 - [The Problem](#the-problem)
 - [What This Does](#what-this-does)
 - [Key Results](#key-results)
-- [The 23 Review Categories](#the-23-review-categories)
+- [The 25 Review Categories](#the-25-review-categories)
 - [Verification & Evidence](#verification--evidence)
 - [Architecture](#architecture)
 - [Repository Structure](#repository-structure)
@@ -62,7 +62,7 @@ The core requirement is not "generate findings." It is "generate findings that h
 
 ## What This Does
 
-1. **23 review categories** - 22 LLM analysis agents plus a deterministic dead-code checker that needs no LLM call
+1. **25 review categories** - 22 LLM analysis agents plus a deterministic dead-code checker, dependency chain analysis, and compliance & regulation checker
 2. **Multi-step agentic workflow** - planner, change understanding, parallel category analysis, evidence verification, cross-category synthesis, and aggregation into a final review
 3. **Layered deterministic verification** - every LLM finding is checked against regex, AST, symbol, and taint layers and assigned an evidence status: `confirmed`, `strongly_supported`, `insufficient_evidence`, or `rejected`
 4. **Lightweight taint analysis** - user-controlled sources are tracked to SQL, shell, filesystem, HTTP, deserialization, and log sinks, with sanitizer and parameterized-query awareness
@@ -87,7 +87,7 @@ The core requirement is not "generate findings." It is "generate findings that h
 
 | Signal | Value |
 |---|---|
-| Review categories | 23 (22 LLM agents + deterministic dead-code) |
+| Review categories | 25 (22 LLM agents + deterministic dead-code + dependency chain + compliance) |
 | Evidence statuses | confirmed / strongly_supported / insufficient_evidence / rejected |
 | LLM providers | 6 (OpenAI, Anthropic, Gemini, OpenAI-compatible, Ollama, mock) |
 | Output formats | Markdown, JSON, SARIF 2.1.0 |
@@ -99,9 +99,9 @@ An honest benchmark: metrics are empty until experiments actually run - nothing 
 
 ---
 
-## The 23 Review Categories
+## The 25 Review Categories
 
-The reviewer judges a change across **23 evidence-backed categories**. All share the same hard rules: concrete evidence tied to a changed line, severity `critical → info`, confidence in [0, 1], and style preferences are never reported.
+The reviewer judges a change across **25 evidence-backed categories**. All share the same hard rules: concrete evidence tied to a changed line, severity `critical → info`, confidence in [0, 1], and style preferences are never reported.
 
 | Category | What it checks |
 |---|---|
@@ -127,6 +127,8 @@ The reviewer judges a change across **23 evidence-backed categories**. All share
 | Compatibility | incompatible serialized data, changed event/message schemas, renamed env vars, changed CLI args, rolling-deployment coexistence |
 | Configuration / Deployment | new required env vars without config, type mismatches, broken health/readiness checks, startup-order and migration sequencing |
 | Resource lifecycle | file/socket/connection leaks, goroutines/tasks that never terminate, listeners/subscriptions never removed, locks never released, timers never cleaned up |
+| Dependency chain analysis | Transitive dependency vulnerability detection, known CVE-pattern matching, unpinned/git-sourced transitive deps, cloud-cost risk from heavy dependency additions |
+| Compliance / Regulation | GDPR PII handling and consent audit, HIPAA PHI field detection, PCI-DSS payment card data exposure, SOC 2 audit trail and access control gaps |
 | Dead code (deterministic) | newly-added imports and locals never referenced anywhere in the repository snapshot - no LLM involved |
 
 ---
@@ -169,7 +171,7 @@ Code Change (GitHub PR / commit / local git)
         ↓
 Diff ingestion → Planner → Change Understanding → Context Retrieval (RAG)
         ↓
-  22 analysis agents in parallel        Dead Code (deterministic, no LLM)
+  24 analysis agents in parallel        Dead Code (deterministic, no LLM)
   correctness, security, testing,          ↓
   regression, performance, ...       Evidence verification (regex → AST → symbol → taint)
   authorization, reliability,              ↓
@@ -188,7 +190,7 @@ Every stage is a typed component (pydantic in/out) with its own timeout, retry p
 agentic-code-reviewer/
 |
 +-- src/agentic_code_reviewer/
-|   +-- agents/            planner, change_analyzer, 22 analysis agents + a
+|   +-- agents/            planner, change_analyzer, 24 analysis agents + a
 |   |                      deterministic dead-code checker, verifier, aggregator
 |   +-- orchestration/     workflow state machine, review state, typed event stream
 |   +-- analysis/          diff parsing, repository snapshot, AST rules, taint
@@ -561,6 +563,8 @@ All settings are read from environment variables and map to `Settings` fields in
 | `LLM_CACHE_ENABLED` / `LLM_CACHE_DIR` | `false` / config `cache/llm` | content-addressed disk cache of structured LLM responses (repeat-review cost cut) |
 | `GITHUB_TOKEN` / `GITHUB_REVIEW_PUBLISH` | - / `false` | GitHub integration |
 | `WORKFLOW_USE_RETRIEVAL` / `WORKFLOW_USE_VERIFIER` / `WORKFLOW_USE_*_AGENT` / `WORKFLOW_USE_DEAD_CODE_CHECKER` | all `true` | ablation switches - disable individual categories |
+| `WORKFLOW_USE_DEPENDENCY_CHAIN_AGENT` | `true` | disable dependency chain analysis agent |
+| `WORKFLOW_USE_COMPLIANCE_AGENT` | `true` | disable compliance & regulation checker agent |
 | `BENCHMARK_DATASET` / `MAX_WORKERS` | `benchmarks/datasets/fixture_small.json` / `4` | evaluation |
 | `LOG_LEVEL` / `LOG_FORMAT` | `INFO` / `json` | `DEBUG` \| `INFO` \| `WARNING` \| `ERROR`; `json` \| `text` |
 

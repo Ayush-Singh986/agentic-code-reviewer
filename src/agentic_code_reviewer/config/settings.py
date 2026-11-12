@@ -238,6 +238,12 @@ class Settings(BaseSettings):
     workflow_use_resource_lifecycle_agent: bool = Field(
         default=True, alias="WORKFLOW_USE_RESOURCE_LIFECYCLE_AGENT"
     )
+    workflow_use_dependency_chain_agent: bool = Field(
+        default=True, alias="WORKFLOW_USE_DEPENDENCY_CHAIN_AGENT"
+    )
+    workflow_use_compliance_agent: bool = Field(
+        default=True, alias="WORKFLOW_USE_COMPLIANCE_AGENT"
+    )
     workflow_use_dead_code_checker: bool = Field(
         default=True, alias="WORKFLOW_USE_DEAD_CODE_CHECKER"
     )
