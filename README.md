@@ -182,10 +182,6 @@ Diff ingestion → Planner → Change Understanding → Context Retrieval (RAG)
 
 Every stage is a typed component (pydantic in/out) with its own timeout, retry policy, structured error recording, and observability. LLM failures degrade gracefully - a single failed reviewer never destroys the review; the workflow continues and records the stage error. The workflow streams typed events (`orchestration/events.py`) so the TUI renders live progress without blocking the review thread.
 
-### Architecture Diagram
-
-![Agentic Code Reviewer Architecture Diagram](docs/architecture-diagram.png)
-
 **Workflow Stages:**
 
 1. **Planner** - Analyzes the diff and creates a review strategy
@@ -203,15 +199,6 @@ Every stage is a typed component (pydantic in/out) with its own timeout, retry p
 - **Evidence-Based Verification**: Every finding is validated against concrete evidence
 - **Deterministic Fallbacks**: If LLM fails, use rules-based alternatives
 - **Complete Observability**: Structured logging with review_id correlation
-
-![Pipeline Progress](docs/screenshots/pipeline.svg)
-*Live pipeline view showing real-time progress and severity counters*
-
-![Results Dashboard](docs/screenshots/results.svg)
-*Comprehensive findings browser with severity pills and evidence details*
-
-![Categories View](docs/screenshots/categories.svg)
-*All findings grouped by category with live severity chips*
 
 ---
 
