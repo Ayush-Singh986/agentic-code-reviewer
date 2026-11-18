@@ -182,6 +182,37 @@ Diff ingestion → Planner → Change Understanding → Context Retrieval (RAG)
 
 Every stage is a typed component (pydantic in/out) with its own timeout, retry policy, structured error recording, and observability. LLM failures degrade gracefully - a single failed reviewer never destroys the review; the workflow continues and records the stage error. The workflow streams typed events (`orchestration/events.py`) so the TUI renders live progress without blocking the review thread.
 
+### Architecture Diagram
+
+![Agentic Code Reviewer Architecture](docs/architecture-diagram.svg)
+
+**Workflow Stages:**
+
+1. **Planner** - Analyzes the diff and creates a review strategy
+2. **Change Analyzer** - Understands what changed and why
+3. **Context Retrieval (RAG)** - Fetches relevant repository context
+4. **Parallel Analysis Agents (25 agents)** - 22 LLM agents + 3 deterministic checks running concurrently
+5. **Evidence Verifier** - Triple-layer verification (regex → AST → symbol → taint)
+6. **Cross-Category Correlation** - Groups related findings and detects interactions
+7. **Aggregator** - Deduplicates, filters, ranks findings and generates final report
+
+**Key Features:**
+
+- **Parallel Processing**: All analysis agents run simultaneously for maximum speed
+- **Graceful Degradation**: Single agent failures don't stop the entire review
+- **Evidence-Based Verification**: Every finding is validated against concrete evidence
+- **Deterministic Fallbacks**: If LLM fails, use rules-based alternatives
+- **Complete Observability**: Structured logging with review_id correlation
+
+![Pipeline Progress](docs/screenshots/pipeline.svg)
+*Live pipeline view showing real-time progress and severity counters*
+
+![Results Dashboard](docs/screenshots/results.svg)
+*Comprehensive findings browser with severity pills and evidence details*
+
+![Categories View](docs/screenshots/categories.svg)
+*All findings grouped by category with live severity chips*
+
 ---
 
 ## Repository Structure
