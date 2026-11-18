@@ -184,7 +184,7 @@ Every stage is a typed component (pydantic in/out) with its own timeout, retry p
 
 ### Architecture Diagram
 
-![Agentic Code Reviewer Architecture](docs/architecture-diagram.svg)
+![Agentic Code Reviewer Architecture Diagram](docs/architecture-diagram.png)
 
 **Workflow Stages:**
 
